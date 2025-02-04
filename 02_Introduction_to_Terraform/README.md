@@ -1,6 +1,8 @@
 ## 1. Giới thiệu về Terraform
 
-**Định nghĩa Terraform:** Terraform là một công cụ mã hóa cơ sở hạ tầng (IaC) phát triển bởi HashiCorp, cho phép tự động hóa quá trình triển khai và quản lý cơ sở hạ tầng.
+**Định nghĩa Terraform:** 
+Terraform là một công cụ mã hóa cơ sở hạ tầng (IaC) phát triển bởi HashiCorp, 
+cho phép tự động hóa quá trình triển khai và quản lý cơ sở hạ tầng.
 
 ## 2. Cài đặt và thiết lập Terraform (khoảng 4h)
 
