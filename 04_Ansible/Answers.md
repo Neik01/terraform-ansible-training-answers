@@ -12,7 +12,7 @@
     key=value
     ````
 
-4. Children trong inventory được sử dụng để tạo ra các mối quan hệ parent/children hay nested groups. Các children sẽ là các groups con trong group cha lớn hơn
+4. Children trong inventory được sử dụng để tạo ra các mối quan hệ parent/children hay nested groups. Các children sẽ là các group con trong group cha lớn hơn
 
 # 4.2 Playbooks
 1. Ansible playbook là những bản thiết kế tự động hóa, được viết bằng YAML. Ansible dùng playbook để triển khai và cấu hình các node trong inventory
@@ -21,10 +21,22 @@
 - Basic structure của playbook bao gồm các plays, mỗi plays bao gồm các tasks để thực hiện trên các hosts
 - Basic structure bao gồm thông tin về một hoặc nhiều group host mà play sẽ thực hiện, các tasks cần thực hiện và module ansible cần dùng trong tasks
 
-3. Playbook thực thi các task theo thứ tự, từ trên xuống dưới
+```yaml
+    ---
+    - name: Example playbook
+      hosts: hosts_group
+      tasks: 
+       - name: Install apache
+         ansible.builtin.apt:
+           - name: apache2
+    ---
+```
+
+
+3. Playbook thực thi các task trên các hosts phù hợp với pattern được chỉ định theo thứ tự từng cái một. Từng task sẽ thực thi một module với các tham số được chỉ định. Khi đã thực thi task trên mọi host thì sẽ chuyển đến task tiếp theo. Ansible sẽ thực thi mọi chỉ dẫn trong play trên mọi máy host được chỉ định giống nhau. Nếu xảy ra lỗi trên host, ansible sẽ loại bỏ host đó ra khỏi vòng lặp trong phần còn lại của playbook
 
 # 4.3 Ansible roles
-1. Ansible role cho phép ta load các biến, file, tasks,... dựa trên một cấu trúc thư mục đã định nghĩa. 
+1. Ansible role cho phép tái sử dụng các nội dung tasks, files,...  dựa trên một cấu trúc thư mục đã định nghĩa. 
 
 2. Cấu trúc thư mục của một role gồm 7 thư mục chuẩn:
 - tasks/main.yml: Một danh sách các tasks mà role cung cấp đến play để thực thi
@@ -39,7 +51,7 @@
 - `include_role`: Sử dụng role động. Chỉ khi nào thực thi đến câu lệnh mới có thể sử dụng role
 - `import_role`: Sử dụng role tĩnh. Role được thêm từ đầu khi chạy playbook 
 
-# 4.4 Ansible variablé
+# 4.4 Ansible variables
 1. 
 - Chỉ được dùng các ký tự chữ, số và dấu gạch dưới
 - Không được dùng các keyword trong python và playbook 
@@ -54,7 +66,7 @@
 3. `"{{ var }}"`
 4. 
 Nơi đặt biến theo thứ tự ưu tiên từ thấp đến cao:
-- Giá trị command line
+- Giá trị từ command line
 
 - role defaults 
 
