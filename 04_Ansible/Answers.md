@@ -29,7 +29,6 @@
        - name: Install apache
          ansible.builtin.apt:
            - name: apache2
-    ---
 ```
 
 
