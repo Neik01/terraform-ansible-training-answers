@@ -9,6 +9,6 @@ all:
     backend:
       hosts:
         10.0.0.113:
-    database:
+    frontend:
       hosts:
         10.0.0.114:

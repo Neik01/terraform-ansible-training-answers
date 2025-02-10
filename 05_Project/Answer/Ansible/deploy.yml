@@ -1,0 +1,29 @@
+---
+- name: Install and run backend
+  hosts: backend
+  become: yes
+  tasks:
+    - name: Install dependencies and compile
+      ansible.builtin.shell: mvn clean install -DskipTests=true
+      args:
+        chdir: /usr/src/TaskFlow_backend
+
+    - name: Run Spring app
+      ansible.builtin.shell: mvn spring-boot:run
+      args:
+        chdir: /usr/src/TaskFlow_backend
+
+
+- name: Install and run frontend
+  hosts: frontend
+  become: yes
+  tasks:
+    - name: Install dependencies and libs
+      ansible.builtin.shell: npm install
+      args:
+        chdir: /usr/src/TaskFlow_frontend
+
+    - name: Run Angular app
+      ansible.builtin.shell: npm run start
+      args:
+        chdir: /usr/src/TaskFlow_frontend
