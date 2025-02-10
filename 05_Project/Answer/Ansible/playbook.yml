@@ -43,6 +43,12 @@
         state: present
         login_unix_socket: /run/mysqld/mysqld.sock
 
+    - name: Create an user
+      community.mysql.mysql_user:
+        name: 'ntk'
+        password: '011020'
+        priv: '*.*:ALL'
+        login_unix_socket: /run/mysqld/mysqld.sock
 - name: Install backend
   hosts: backend
   become: yes
