@@ -1,0 +1,97 @@
+---
+
+- name: Update apt cache
+  hosts: all
+  become: yes
+  tags: update
+  tasks:
+    - name: update cache
+      ansible.builtin.apt:
+        update_cache: true
+
+- name: Install database
+  hosts: database
+  become: yes
+  tags: db
+  tasks:
+    - name: install pip
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
+
+    - name: Install pymysql
+      ansible.builtin.pip:
+        name: pymysql
+        state: present
+
+
+    - name: Installing Mysql  and dependencies
+      ansible.builtin.apt:
+         name: mysql-server
+         state: latest
+      become: yes
+
+    - name: Start and enable mysql
+      ansible.builtin.service:
+        name: mysql
+        enabled: yes
+        state: started
+
+    - name: create a database with name TaskFlow
+      community.mysql.mysql_db:
+        name: TaskFlow
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Install backend
+  hosts: backend
+  become: yes
+  tasks:
+    - name: Install Java 21
+      ansible.builtin.apt:
+        name: openjdk-21-jdk
+        state: latest
+
+    - name: Install maven
+      ansible.builtin.apt:
+        name: maven
+        state: present
+
+    - name: Git clone
+      ansible.builtin.git:
+        repo: https://github.com/Neik01/TaskFlow_backend.git
+        dest: /usr/src/TaskFlow_backend
+
+- name: Install frontend
+  hosts: frontend
+  become: yes
+  tags: frontend
+  tasks:
+    - name: Download and install NVM
+      shell: >
+        curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+      args:
+        creates: ~/.nvm/nvm.sh
+
+    - name: Load NVM (ensure it's available for use)
+      shell:  source ~/.bashrc
+      args:
+        executable: /bin/bash
+
+    - name: install npm
+      shell: >
+        source ~/.nvm/nvm.sh && nvm install 18
+      args:
+        executable: /bin/bash
+
+    - name: Set Node.js v18 as default
+      shell: >
+        source ~/.nvm/nvm.sh && nvm alias default 18
+      args:
+        executable: /bin/bash
+
+
+    - name: Git clone
+      ansible.builtin.git:
+        repo: https://github.com/Neik01/TaskFlow_frontend.git
+        dest: /usr/src/TaskFlow_frontend
