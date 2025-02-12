@@ -52,21 +52,6 @@
         state: present
         login_unix_socket: /run/mysqld/mysqld.sock
 
-    - name: Create an user
-      community.mysql.mysql_user:
-        name: 'ntk'
-        password: '011020'
-        host: '10.0.0.113'
-        priv: '*.*:ALL'
-        login_unix_socket: /run/mysqld/mysqld.sock
-
-
-  handlers:
-    - name: Restart MySQL
-      service:
-        name: mysql
-        state: restarted
-        
 - name: Install backend
   hosts: backend
   become: yes
